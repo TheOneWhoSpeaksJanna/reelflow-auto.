@@ -21,11 +21,11 @@ def source(job_id):
         return bad("Provide a public HTTPS direct video file URL")
     title = str(data.get("title", "New video")).strip()[:100]
     with db() as c:
-        row = c.execute("SELECT status FROM jobs WHERE id=?", (job_id,)).fetchone()
+        row = c.execute("SELECT status,public_id,posts,hosted_url FROM jobs WHERE id=?", (job_id,)).fetchone()
         if not row:
             return bad("Job not found", 404)
-        if row["status"] not in ("needs_source", "failed"):
-            return bad("This job is not editable")
+        if row["status"] not in ("needs_source", "failed") or row["public_id"] or row["hosted_url"] or row["posts"] != "{}":
+            return bad("Review existing remote media before changing this job")
         c.execute("UPDATE jobs SET media_url=?,title=?,status='pending',error='',changed=? WHERE id=?",
                   (url, title, now(), job_id))
         event(c, "Video source added", job_id)
