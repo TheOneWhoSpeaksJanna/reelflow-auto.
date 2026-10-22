@@ -24,7 +24,7 @@ def settings():
         return jsonify(ok=False,error="Invalid channels"),400
     set_setting("channels",json.dumps(ids))
     set_setting("platforms",json.dumps({i:platforms[i] for i in ids}))
-    set_setting("caption",str(data.get("caption","New video #shorts"))[:850])
+    set_setting("caption",str(data.get("caption",""))[:850])
     return jsonify(ok=True)
 
 @manage_api.post("/control")
