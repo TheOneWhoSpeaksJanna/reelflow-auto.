@@ -38,3 +38,9 @@ Run local checks with:
     python -m unittest discover -s tests -v
 
 API references: https://developers.buffer.com/ and https://wispbyte.com/kb/startup-settings
+
+## Automatic captions
+
+For authorized video files, leave the optional caption template blank. ReelFlow automatically creates a title from the video file name and adds platform-specific hashtags. To customize copy, set a template containing {title}. This is a free rule-based caption generator, not speech transcription or scene analysis.
+
+**YouTube watch pages are not video files.** Importing a YouTube watch URL cannot automatically retrieve, edit, or republish third-party copyrighted uploads. For a completely unattended workflow, provide a direct hosted video file that you own or have permission to republish.
