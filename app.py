@@ -4,6 +4,8 @@ import secrets
 from flask import Flask, jsonify, render_template, request, session, redirect
 from web_routes import dashboard_api
 from manage_routes import manage_api
+from import_api import import_api
+from job_routes import job_api
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
@@ -67,6 +69,8 @@ def health():
 
 app.register_blueprint(dashboard_api)
 app.register_blueprint(manage_api)
+app.register_blueprint(import_api)
+app.register_blueprint(job_api)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", os.environ.get("SERVER_PORT", "3000")))
