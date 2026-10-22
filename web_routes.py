@@ -22,6 +22,6 @@ def state():
     return jsonify(ok=True, jobs=jobs, events=events, counts=counts,
                    running=get_setting("running", "0") == "1",
                    channels=json.loads(get_setting("channels", "[]")),
-                   caption=get_setting("caption", "New video #shorts"),
+                   caption=get_setting("caption", ""),
                    configured={"buffer": bool(os.getenv("BUFFER_API_KEY")),
                                "cloudinary": cloud_configured()})
