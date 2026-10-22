@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="csrf-token" content="{{ csrf }}">
+<title>ReelFlow · Studio</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">R</div><span>ReelFlow <small>STUDIO</small></span></div>
+  <nav><a class="active" href="#overview">◫ <span>Overview</span></a>
+    <a href="#import">⊞ <span>Batch importer</span></a>
+    <a href="#queue">☷ <span>Video queue</span></a>
+    <a href="#integrations">⇄ <span>Integrations</span></a>
+    <a href="#activity">◷ <span>Activity</span></a></nav>
+  <div class="aside-bottom"><div class="server"><span class="pulse"></span> Server connected</div>
+  <form action="/logout" method="post"><button class="logout" type="submit">Sign out ↗</button></form></div>
+</aside>
+<main>
+<header><div><p class="eyebrow">YOUR AUTOMATION WORKSPACE</p><h1 id="overview">Content pipeline <span class="gradient">control</span></h1>
+<p class="muted">Import, queue, schedule, confirm, clean up. One video at a time.</p></div>
+<div class="header-actions"><span id="mode" class="pill muted-pill">Queue paused</span>
+<button id="toggle" class="primary" type="button">▶ Start queue</button></div></header>
+<section class="stats">
+<article><div class="stat-label">Total videos <span>▤</span></div><strong id="stat-total">0</strong><small>Up to 500 per queue</small></article>
+<article><div class="stat-label">Ready to process <span>◷</span></div><strong id="stat-ready">0</strong><small>Authorized video URLs</small></article>
+<article><div class="stat-label">Awaiting publish <span>⇄</span></div><strong id="stat-wait">0</strong><small>Buffer confirmation</small></article>
+<article><div class="stat-label">Published <span>✓</span></div><strong id="stat-done">0</strong><small>Media cleaned up</small></article>
+</section>
+<div class="columns">
+<section class="panel" id="import">
+<div class="panel-title"><div><p class="eyebrow">01 / INPUT</p><h2>Bulk link importer</h2></div><span class="chip">MAX 500</span></div>
+<p class="muted small">Paste URLs (one per line), or load a TXT file. Use a direct MP4 URL for media you own, or <code>source URL | direct video URL</code>. A YouTube watch URL alone will be staged until authorized source media is provided.</p>
+<textarea id="links" rows="9" placeholder="https://my-site.example/my-video.mp4&#10;https://youtube.com/watch?v=... | https://my-site.example/original.mp4"></textarea>
+<div class="file-row"><label class="file-btn" for="file">⇧ Import .txt file</label><input id="file" type="file" accept=".txt,.csv,text/plain">
+<span id="line-count">0 / 500 URLs</span></div>
+<label class="rights"><input id="rights" type="checkbox"> I own these videos or have permission to publish them.</label>
+<button class="primary wide" id="add" type="button">＋ Add videos to queue</button>
+</section>
+<section class="panel" id="integrations">
+<div class="panel-title"><div><p class="eyebrow">02 / CONNECTIONS</p><h2>Publishing integrations</h2></div></div>
+<div class="integration"><div class="integ-icon">B</div><div><b>Buffer</b><small>Social scheduler · GraphQL API</small></div><span class="dot-badge" id="buffer-connection">Checking</span></div>
+<div class="integration"><div class="integ-icon">C</div><div><b>Cloudinary</b><small>Optional temporary media hosting</small></div><span class="dot-badge" id="cloud-connection">Checking</span></div>
+<p class="muted small">Add secret keys through Wispbyte Startup, never in this page. Buffer downloads media at publication time, so cloud copies remain until posts are sent.</p>
+<div class="section-line"></div>
+<div class="flex-between"><h3>Select channels</h3><button class="ghost" id="refresh-channels">↻ Refresh</button></div>
+<div id="channels"><p class="muted small">Connect Buffer to show your channels.</p></div>
+<label class="caption-label">Post caption<textarea id="caption" rows="3" placeholder="Describe your video and add hashtags"></textarea></label>
+<button class="secondary wide" id="save-settings">Save channel settings</button>
+</section>
+</div>
+<section class="panel queue-panel" id="queue">
+<div class="panel-title"><div><p class="eyebrow">03 / PRODUCTION</p><h2>Video queue</h2></div><div class="pill" id="count-chip">0 jobs</div></div>
+<div class="toolbar"><input id="search" placeholder="Search links or status..."><select id="filter"><option value="all">All statuses</option><option value="pending">Ready</option><option value="needs_source">Needs source</option><option value="awaiting_publish">Awaiting publish</option><option value="published">Published</option><option value="failed">Failed</option><option value="review">Needs review</option></select></div>
+<div class="table-wrap"><table><thead><tr><th>VIDEO / SOURCE</th><th>STATUS</th><th>POSTS</th><th>ACTIONS</th></tr></thead><tbody id="jobs"></tbody></table></div>
+</section>
+<section class="panel" id="activity"><div class="panel-title"><div><p class="eyebrow">04 / LOGS</p><h2>Activity</h2></div></div><div id="events" class="events"><p class="muted">No events yet</p></div></section>
+<footer>ReelFlow • Built for owned and licensed content. Automated editing is limited by free hosting resources.</footer>
+</main></div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body></html>
