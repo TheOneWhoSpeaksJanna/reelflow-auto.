@@ -8,6 +8,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from integrations import delete_hosted_video, get_post_status, host_video, schedule_video
+from captions import compose, title_from_url
 
 DATABASE = Path(os.environ.get("DATABASE_PATH", str(Path(__file__).parent / "data" / "reelflow.sqlite3")))
 DATABASE.parent.mkdir(parents=True, exist_ok=True)
@@ -99,8 +100,9 @@ def process(row):
         for channel, platform in channels:
             attempts += 1
             post_id = schedule_video(channel, platform, hosted,
-                                    get_setting("caption", "New video #shorts"),
-                                    row["title"] or "New short video")
+                                    compose(row["title"], row["media_url"], platform,
+                                            get_setting("caption", "")),
+                                    row["title"] or title_from_url(row["media_url"]))
             posts[channel] = post_id
             with db() as c:
                 c.execute("UPDATE jobs SET posts=?,changed=? WHERE id=?",
